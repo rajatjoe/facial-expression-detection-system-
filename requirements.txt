@@ -1,0 +1,12 @@
+tensorflow==2.16.1
+keras
+opencv-python~=4.5.5.64
+matplotlib
+numpy
+pandas
+Pillow
+future
+scikit-image
+Flask==2.1.2
+emoji==1.7.0
+werkzeug==2.0.3

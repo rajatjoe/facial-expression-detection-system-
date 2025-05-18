@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Facial Emotion Recognition</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --dark-bg: #1a1a1a;
+            --darker-bg: #141414;
+            --accent: #00ff95;
+            --text: #ffffff;
+            --secondary-text: #b3b3b3;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container-fluid {
+            padding: 2rem;
+        }
+
+        .header {
+            background-color: var(--darker-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--secondary-text);
+            font-size: 1.1rem;
+        }
+
+        .video-container {
+            background: var(--darker-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container img {
+            max-height: 100%;
+            width: auto;
+            border-radius: 10px;
+        }
+
+        .emotion-display {
+            background: var(--darker-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .emotion-display h3 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #clock {
+            font-size: 1.3rem;
+            color: var(--text);
+            padding: 1rem;
+            background: rgba(0, 255, 149, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .emotion-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .emotion-list li {
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: var(--secondary-text);
+        }
+
+        .emotion-list li i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <!-- website header  -->
+        <div class="header text-center">
+            <h1><i class="bi bi-camera-video"></i> Facial Emotion Recognition</h1>
+            <p>Real-time emotion detection powered by deep learning</p>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- VIDEO CONTAINER -->
+            <div class="col-lg-8">
+                <div class="video-container">
+                    <img src="{{ url_for('video_feed') }}" class="img-fluid" alt="Video Feed">
+                </div>
+            </div>
+
+            <!-- LIVE EMOTIONS DISPLAY -->
+            <div class="col-lg-4">
+                
+                <div class="emotion-display">
+                    <h3><i class="bi bi-emoji-smile"></i> Current Emotion</h3>
+                    <p id="clock">Analyzing facial expression...</p>
+                </div>
+
+                <div class="emotion-display">
+                    <h3><i class="bi bi-info-circle"></i> Detectable Emotions</h3>
+                    <p>This AI system can detect the following emotions:</p>
+                    <ul class="emotion-list">
+                        <li><i class="bi bi-emoji-laughing"></i>Happy</li>
+                        <li><i class="bi bi-emoji-frown"></i>Sad</li>
+                        <li><i class="bi bi-emoji-angry"></i>Angry</li>
+                        <li><i class="bi bi-emoji-surprise"></i>Surprised</li>
+                        <li><i class="bi bi-emoji-expressionless"></i>Fearful</li>
+                        <li><i class="bi bi-emoji-dizzy"></i>Disgusted</li>
+                        <li><i class="bi bi-emoji-neutral"></i>Neutral</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const clock = document.getElementById("clock");
+        setInterval(() => {
+            fetch("{{ url_for('time_feed') }}")
+                .then(response => response.text())
+                .then(text => {
+                    clock.innerHTML = text;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    clock.innerHTML = "Connection lost...";
+                });
+        }, 100);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
